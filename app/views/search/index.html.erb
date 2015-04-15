@@ -1,0 +1,123 @@
+<html>
+<head>
+	<title>Search</title>
+	<style type="text/css">
+		.section_title{
+			text-transform: capitalize;
+		}
+		.insta_img{
+			width:350px;
+			height:350px;
+			margin:15px;
+		}
+		.insta_container{
+			display:inline-block;
+		}
+		.save{
+			display:block;
+		}
+		#search {
+		display: block;
+		width:400px;
+		margin-left:auto;
+		margin-right:auto;
+		}
+		#location_input{
+			width:300px;
+			height:34px;
+			margin:5px;
+		}
+		h1{
+			width:300px;
+			margin-left:auto;
+			margin-right:auto;
+			margin-top:5px;
+			margin-bottom: 5px;
+			padding:5px;
+		}		
+	#sign_up_login, #logoff{
+		float:right;
+		margin-right:50px;
+	}
+	#share{
+		float:right;
+		margin-right:250px;
+	}
+	.section_title{
+		margin-left:50px;
+		border-bottom:1px solid black;
+		width:250px;
+	}
+	#current_user{
+		text-transform: capitalize;
+		margin:15px;
+	}
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('#search').submit(function(){
+				$.post($(this).attr('action'),$(this).serialize(),function(data){
+					pictures = data.pic // pictures now contains the associative array of information
+					picture_length = pictures.length
+					if(data.logged_in == true)
+					{
+						user = data.user
+
+						for(var i = 0; i<picture_length; i++)
+						{
+							$("#content").prepend("<div class='insta_container'><img class='insta_img' src="+pictures[i]['images']['low_resolution']['url']+"><a class='save' href='/pictures/create/"+user.id+"/"+pictures[i]['images']['low_resolution']['url']+"'>Save</a></div>");
+						}
+						// alert(pictures[0]['images']['low_resolution']['url'])
+						$("#content").prepend("<h3 class='section_title'>"+data.location+"</h3>");
+					  	
+					}else
+					{
+						for(var i = 0; i<picture_length; i++)
+						{
+							$("#content").prepend("<img  class='insta_img' src="+pictures[i]['images']['low_resolution']['url']+">");
+						}
+						// alert(pictures[0]['images']['low_resolution']['url'])
+						$("#content").prepend("<h3 class='section_title'>"+data.location+"</h3>");
+					}	
+
+				
+				}, "json");
+				return false;
+			});
+		});
+	</script>
+	
+</head>
+<body>
+	<% if flash[:message]%>
+		<p><%=flash[:message] %></p>
+	<% end%>
+	<% if @user%>
+		<a href="/sessions/destroy" id='logoff'>Logoff</a>
+	<% end%>
+
+	<% if @status == false%>
+		<a href="/users/new" id='sign_up_login'>Sign Up/Login</a>
+	<% end%>
+	<%if @user %>
+		<p id='current_user'>Welcome <%=@user.first_name %> <%=@user.last_name %></p>
+	<% end%>
+	<div id='center'>
+			<h1>InstaSearch</h1>
+			<form id='search' action='/search/api' method ='post'>
+				<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+				<input type='text' name="location[location]" placeholder='Enter Location' id='location_input'>
+				<input type='submit' value='Submit' class='btn btn-info'>
+			</form>
+	</div>
+
+	<div id='share'>
+		<%= pinterest_button %>
+	</div>
+	
+	<div id='content'>
+
+	</div>
+</body>
+</html>

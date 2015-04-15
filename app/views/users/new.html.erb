@@ -1,0 +1,76 @@
+<html>
+<head>
+	<title>Sign Up/Login</title>
+	<style type="text/css">
+		#login_submit{
+			margin-top:5px;
+			margin-left:90px;
+		}
+		#login input{
+			display:block;
+			height:34px;
+			margin-top:8px;
+		}
+		#login{
+			margin-right:auto;
+			margin-left:auto;
+			display:block;
+			width:300px;
+		}
+		#signup_submit{
+			margin-top:5px;
+			margin-left:90px;
+		}
+		#sign_up input{
+			display:block;
+			height:34px;
+			margin-top:8px;
+		}
+		#sign_up{
+			margin-right:auto;
+			margin-left:auto;
+			display:block;
+			width:300px;
+			margin-top:100px;
+		}
+		h1{
+			width:350px;
+			margin-right:auto;
+			margin-left:auto;
+		}
+		#back{
+			margin:25px;
+			margin-top: 25px;
+		}
+	</style>
+</head>
+<body>
+	<% if flash[:message]%>
+		<p><%=flash[:message] %></p>
+	<% end%>
+	<a href="/search/index" id='back'>Back</a>
+	<h1>InstaSearch</h1>
+	<div id='login'>
+		<h3>Login</h3>
+		<form action='/users/login' method='post'>
+			<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+			<input type='input' name='user[email]' placeholder='Enter Email'>
+			<input type='password' name='user[password]' placeholder='Enter Password'>
+			<input type='submit' value='Submit' id='login_submit' class='btn btn-info'>
+		</form>
+	</div>
+<div id='sign_up'>
+	<h3>SignUp</h3>
+	<form action='/users/create' method='post'>
+		<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+		<input type='input' name='user[first_name]' placeholder='Enter First Name'>
+		<input type='input' name='user[last_name]' placeholder='Enter Last Name'>
+		<input type='input' name='user[email]' placeholder='Enter Email'>
+		<input type='input' name='user[user_name]' placeholder='Enter User Name'>
+		<input type='password' name='user[password]' placeholder='Enter Password'>
+		<input type='submit' value='Submit' id='signup_submit' class='btn btn-info'>
+	</form>
+</div>
+
+</body>
+</html>
