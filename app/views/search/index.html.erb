@@ -52,6 +52,13 @@
 		text-transform: capitalize;
 		margin:15px;
 	}
+	.no_results{
+		display:block;
+		margin-left: auto;
+		margin-right:auto;
+		width:300px;
+		font-weight: bold;
+	}
 	</style>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script type="text/javascript">
@@ -60,28 +67,38 @@
 				$.post($(this).attr('action'),$(this).serialize(),function(data){
 					pictures = data.pic // pictures now contains the associative array of information
 					picture_length = pictures.length
+
 					if(data.logged_in == true)
 					{
 						user = data.user
 
-						for(var i = 0; i<picture_length; i++)
-						{
+						if(picture_length==0){
+							$("#content").prepend("<p class='no_results'>No Results Found</p>");
+							$("#content").prepend("<h3 class='section_title'>"+data.location+"</h3>");
+						}
+						else{
+							for(var i = 0; i<picture_length; i++)
+							{
 							$("#content").prepend("<div class='insta_container'><img class='insta_img' src="+pictures[i]['images']['low_resolution']['url']+"><a class='save' href='/pictures/create/"+user.id+"/"+pictures[i]['images']['low_resolution']['url']+"'>Save</a></div>");
-						}
+							}
 						// alert(pictures[0]['images']['low_resolution']['url'])
-						$("#content").prepend("<h3 class='section_title'>"+data.location+"</h3>");
-					  	
-					}else
+							$("#content").prepend("<h3 class='section_title'>"+data.location+"</h3>");
+						}	
+					}else 
 					{
-						for(var i = 0; i<picture_length; i++)
-						{
-							$("#content").prepend("<img  class='insta_img' src="+pictures[i]['images']['low_resolution']['url']+">");
+						if(picture_length==0){
+							$("#content").prepend("<p class='no_results'>No Results Found</p>");
+							$("#content").prepend("<h3 class='section_title'>"+data.location+"</h3>");
 						}
-						// alert(pictures[0]['images']['low_resolution']['url'])
-						$("#content").prepend("<h3 class='section_title'>"+data.location+"</h3>");
-					}	
-
-				
+						else{
+							for(var i = 0; i<picture_length; i++)
+							{
+								$("#content").prepend("<img  class='insta_img' src="+pictures[i]['images']['low_resolution']['url']+">");
+							}
+							// alert(pictures[0]['images']['low_resolution']['url'])
+							$("#content").prepend("<h3 class='section_title'>"+data.location+"</h3>");
+							}
+					}						
 				}, "json");
 				return false;
 			});

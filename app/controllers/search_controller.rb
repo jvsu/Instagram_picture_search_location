@@ -20,6 +20,7 @@ class SearchController < ApplicationController
   end
 
   def api
+
   	#get data from google location API
   	google_sensor ="&sensor=false" # this is the second parameter sent to google. 
   	location_input = location_params[:location]
@@ -30,34 +31,39 @@ class SearchController < ApplicationController
   	request = Net::HTTP::Get.new(uri1.request_uri) #request to google api
   	response = http.request(request)
   	all_google_data = response.body
-  	@google_data = JSON.load(all_google_data)
-  	lat = @google_data["results"][0]["geometry"]["location"]["lat"]
-  	lng = @google_data["results"][0]["geometry"]["location"]["lng"]
+  	google_data = JSON.load(all_google_data)
+  	lat = google_data["results"][0]["geometry"]["location"]["lat"]
+  	lng = google_data["results"][0]["geometry"]["location"]["lng"]
   	#end of google API code
 
-  	#instagram API
-  	instagram_client_id = "&client_id=619ec5d205b943f88a1a96888ae361e9"
-  	$instagram_uri= "https://api.instagram.com/v1/media/search?lat=#{lat}&lng=#{lng}&distance=1000"+instagram_client_id #uri for instagram NEED TO ADD THE KEY
-  	uri_insta = URI.parse($instagram_uri)
-  	http1= Net::HTTP.new(uri_insta.host, uri_insta.port)
-  	#make sure you add this code since you are dealing with https
- 	http1.use_ssl = true
+
+    instagram_client_id = "&client_id=619ec5d205b943f88a1a96888ae361e9"
+     $instagram_uri= "https://api.instagram.com/v1/media/search?lat=#{lat}&lng=#{lng}&distance=1000"+instagram_client_id #uri for instagram NEED TO ADD THE KEY
+    uri_insta = URI.parse($instagram_uri)
+    http1= Net::HTTP.new(uri_insta.host, uri_insta.port)
+    #make sure you add this code since you are dealing with https
+    http1.use_ssl = true
     http1.verify_mode = OpenSSL::SSL::VERIFY_NONE
-  	request = Net::HTTP::Get.new(uri_insta.request_uri)
-	response = http1.request(request)
-	all_insta_data = response.body
-	insta = JSON.load(all_insta_data)
-	@insta_data = insta['data']
+    request = Net::HTTP::Get.new(uri_insta.request_uri)
+    response = http1.request(request)
+    all_insta_data = response.body
+    insta = JSON.load(all_insta_data)
+     insta_data = insta['data']
 
   # if there is a session create(the user is logged in), then send the right credentials to save pic
   if session[:user_id]
     user = User.find(session[:user_id])
-    json_data = {:pic=>@insta_data, :location=>location_input, :logged_in=>true, :user=>user}
+    json_data = {:pic=>insta_data, :location=>location_input, :logged_in=>true, :user=>user}
     render json: json_data
   else
-    json_data = {:pic=>@insta_data, :location=>location_input}
+    json_data = {:pic=>insta_data, :location=>location_input}
     render json: json_data
   end
+   
+
+
+  	#instagram API
+  	
   #information for the ajax response
   
 
