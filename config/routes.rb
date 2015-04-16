@@ -17,7 +17,7 @@ root :to=> 'search#index'
   match '/users/create'=>'users#create', :via=>[:get,:post]
   match '/users/login'=>'users#login', :via=>[:get,:post]
    match '/sessions/destroy'=>'sessions#destroy', :via=>[:get,:post]
-    match '/sessions/new'=>'sessions#new', :via=>[:get,:post]
+    # match '/sessions/new'=>'sessions#new', :via=>[:get,:post]
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
