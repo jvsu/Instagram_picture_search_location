@@ -65,9 +65,10 @@
 		$(document).ready(function(){
 			$('#search').submit(function(){
 				$.post($(this).attr('action'),$(this).serialize(),function(data){
+					
+				if (data.pic) {
 					pictures = data.pic // pictures now contains the associative array of information
 					picture_length = pictures.length
-
 					if(data.logged_in == true)
 					{
 						user = data.user
@@ -98,8 +99,12 @@
 							// alert(pictures[0]['images']['low_resolution']['url'])
 							$("#content").prepend("<h3 class='section_title'>"+data.location+"</h3>");
 							}
-					}						
-				}, "json");
+					}	
+				}
+				else{
+					return nil; // return or do nothing. 
+				};
+				}, "json");// function ends here
 				return false;
 			});
 		});
