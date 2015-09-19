@@ -133,11 +133,5 @@ RSpec.describe UsersController, type: :controller do
        post(:login, :user=>{:email=>'dave@yahoo.com', :password=>'aaaaaaaa'})
        expect(assigns['user']).to be_nil
     end
-
-
   end
-
-
- 
-
 end

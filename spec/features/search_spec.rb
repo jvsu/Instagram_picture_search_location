@@ -29,4 +29,5 @@ describe "Search Feature", :js=>true do
 			end
 			expect(page).to have_content("InstaSearch")
 	end
+
 end

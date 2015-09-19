@@ -63,10 +63,6 @@ RSpec.describe SearchController, type: :controller do
 
 		it "Returns HTTP status found if blank search query is sent"
 		# Don't know if this should be a unit test or capy 
-		
-
-
-
 
 	end
 	
