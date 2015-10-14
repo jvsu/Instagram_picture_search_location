@@ -116,13 +116,6 @@
 	<% if flash[:message]%>
 		<p><%=flash[:message] %></p>
 	<% end%>
-	<% if @user%>
-		<a href="/sessions/destroy" id='logoff'>Logoff</a>
-	<% end%>
-
-	<% if @status == false%>
-		<a href="/users/new" id='sign_up_login'>Sign Up/Login</a>
-	<% end%>
 	<%if @user %>
 		<p id='current_user'>Welcome <%=@user.first_name %> <%=@user.last_name %></p>
 	<% end%>
